@@ -35,6 +35,11 @@ jobs:
       - name: Run Semgrep scan
         # --error 引数により、脆弱性発見時にジョブを失敗させる
         # run: semgrep scan --config="p/java" --error
+        
+        # --rm -> 実行が終わったら、コンテナを即座に削除せよ
+        # Dockerの 「ボリュームマウント（Volume Mount）」
+        # -v $(pwd):/src -> 今の場所（リポジトリのコード）を、コンテナの/srcにマウント
+        # $(pwd) : 現在のディレクトリ（あなたのJavaコードがある場所）
         run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
 
       - name: Upload SARIF file
@@ -45,3 +50,16 @@ jobs:
           sarif_file: semgrep.sarif
         # スキャンが失敗しても（脆弱性が見つかっても）アップロードを実行する設定
         if: always()
+
+      - name: Debug - List files
+        run: ls -R $(pwd)  # 現在地にあるファイルをすべて表示
+
+      - name: Upload Build Artifact
+        # GitHub公式の「ファイルを保存する」アクション
+        uses: actions/upload-artifact@v4
+        with:
+          # 保存する名前（GitHub上でこの名前で表示されます）
+          name: java-application-jar
+          # 保存したいファイルやフォルダのパス
+          # Mavenのビルド成果物は通常 target フォルダに作成されます
+          path: target/*.jar
