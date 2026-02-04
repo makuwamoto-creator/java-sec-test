@@ -13,8 +13,8 @@ jobs:
     permissions:
       security-events: write
 
-    container:
-      image: semgrep/semgrep
+    #container:
+    #  image: semgrep/semgrep
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 # リポジトリのコードを仮想環境にコピー
