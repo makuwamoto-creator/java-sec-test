@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # Maven (pom.xml) のライブラリを監視する設定
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      # 毎日チェックする
+      interval: "daily"
