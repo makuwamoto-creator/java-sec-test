@@ -1,4 +1,4 @@
-name: Semgrep-Scan
+name: Java-CI-with-Security
 
 on:
   push:
@@ -19,10 +19,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 # リポジトリのコードを仮想環境にコピー
 
+      # (A) Java環境のセットアップ（本番らしいCIの第一歩）
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven' # ビルドを高速化するキャッシュ機能
+
+      # (B) Mavenでビルドを実行（コンパイルエラーがないかチェック）
+      - name: Build with Maven
+        run: mvn clean compile
+
+      # (C) Semgrepスキャンを実行
       - name: Run Semgrep scan
         # --error 引数により、脆弱性発見時にジョブを失敗させる
         # run: semgrep scan --config="p/java" --error
-        run: semgrep scan --config="p/java" --sarif --output=semgrep.sarif
+        run: |
+        docker run --rm -v $(pwd):/src semgrep/semgrep \
+        semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
 
       - name: Upload SARIF file
         # GitHub公式の機能を使って、SARIFファイルをGitHubにアップロードする
