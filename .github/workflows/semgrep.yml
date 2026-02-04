@@ -25,11 +25,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven' # ビルドを高速化するキャッシュ機能
+          cache: 'maven' # ビルドを高速化するキャッシュ機能(.m2フォルダ)
 
       # (B) Mavenでビルドを実行（コンパイルエラーがないかチェック）
       - name: Build with Maven
-        run: mvn clean compile
+        #run: mvn clean compile
+        run: mvn clean package
 
       # (C) Semgrepスキャンを実行
       - name: Run Semgrep scan
