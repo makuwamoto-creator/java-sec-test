@@ -35,9 +35,7 @@ jobs:
       - name: Run Semgrep scan
         # --error 引数により、脆弱性発見時にジョブを失敗させる
         # run: semgrep scan --config="p/java" --error
-        run: |
-        docker run --rm -v $(pwd):/src semgrep/semgrep \
-        semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
+        run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
 
       - name: Upload SARIF file
         # GitHub公式の機能を使って、SARIFファイルをGitHubにアップロードする
