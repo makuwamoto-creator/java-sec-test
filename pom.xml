@@ -12,8 +12,8 @@
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.47</version>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.6.0</version>
         </dependency>
     </dependencies>
 </project>
