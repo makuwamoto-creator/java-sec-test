@@ -3,6 +3,18 @@ import java.sql.*;
 public class App {
     public void getUser(String userId) throws Exception {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", "pass");
+        
+
+        // 1. GitHub Personal Access Token (一番検知されやすい)
+        // 文字列を分割せず、そのまま1つのリテラルとして書くのがコツです
+        String github_token = "ghp_n0tReAlK3yJuStF0rTeStingPuRp0s3sOnLy12345";
+             
+        // 2. AWS Access Key (AKIAで始まり20文字)
+        String aws_access_key = "AKIAV7XXXXXXXXXXXXXX"; 
+        
+        // 3. AWS Secret Key (40文字のランダムっぽい文字列)
+        String aws_secret_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
+
         Statement stmt = conn.createStatement();
         // ❌ 脆弱性テスト用：SQLインジェクションが起きる書き方
         // String query = "SELECT * FROM users WHERE id = " + "`" + userId + "'";
@@ -12,12 +24,7 @@ public class App {
         
         ResultSet rs = stmt.executeQuery(query);
 
-        // GitHubが検知しやすいように、一般的な形式を模したダミーキーです
-        String gcp_key = "AIzaSyA1234567890BCDEFGHIJKLMNOPQRSTUV";
-        // AWSのアクセスキー形式（これもダミーですが、形式は完璧に模しています）
-        String aws_key = "AKIA" + "1234567890ABCDEF"; // 分割して書くと検知を避けることがあるので、つなげて書いてください
-        String aws_secret = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
 
-        
+
     }
 }
