@@ -11,5 +11,8 @@ public class App {
         pstmt.setString(1, userId);
         
         ResultSet rs = stmt.executeQuery(query);
+
+        // GitHubが検知しやすいように、一般的な形式を模したダミーキーです
+        String gcp_key = "AIzaSyA1234567890BCDEFGHIJKLMNOPQRSTUV";
     }
 }
