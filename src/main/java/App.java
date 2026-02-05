@@ -4,8 +4,6 @@ public class App {
     public void getUser(String userId) throws Exception {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", "pass");
         
-        String key = "xoxb-123456789012-1234567890123-4567890abcdefghijklmnopqrstuv";
-
         // 1. GitHub Personal Access Token (一番検知されやすい)
         // 文字列を分割せず、そのまま1つのリテラルとして書くのがコツです
         String github_token = "ghp_n0tReAlK3yJuStF0rTeStingPuRp0s3sOnLy12345";
