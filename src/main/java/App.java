@@ -3,6 +3,7 @@ import java.sql.*;
 public class App {
     public void getUser(String userId) throws Exception {
         String dbPassword = System.getenv("DB_PASSWORD");
+        PreparedStatement pstmt = null;
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", dbPassword)) {
 
             try (Statement stmt = conn.createStatement()) {
