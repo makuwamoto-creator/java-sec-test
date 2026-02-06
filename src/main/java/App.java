@@ -18,7 +18,7 @@ public class App {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                logger.log(Level.SEVERE, line);
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "コマンドの実行に失敗しました。管理者に連絡してください。");
