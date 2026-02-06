@@ -1,3 +1,5 @@
+package com.example; // これを追加（名前は何でも良いですが、一般的になぞります）
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;  // 1. Loggerをインポート
