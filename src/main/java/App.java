@@ -2,34 +2,19 @@ import java.sql.*;
 
 public class App {
     public void getUser(String userId) throws Exception {
-        PreparedStatement pstmt = null;
-        try {
-            String dbPassword = System.getenv("DB_PASSWORD");
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", dbPassword)) {
+        String dbPassword = System.getenv("DB_PASSWORD");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", dbPassword)) {
 
-                try (Statement stmt = conn.createStatement()) {
-                    // ❌ 脆弱性テスト用：SQLインジェクションが起きる書き方
-                    // String query = "SELECT * FROM users WHERE id = " + "`" + userId + "'";
-                    String query = "SELECT * FROM users WHERE id = ?";
-                    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                        pstmt.setString(1, userId);
-                    }
-
-                    ResultSet rs = stmt.executeQuery(query);
+            try (Statement stmt = conn.createStatement()) {
+                // ❌ 脆弱性テスト用：SQLインジェクションが起きる書き方
+                // String query = "SELECT * FROM users WHERE id = " + "`" + userId + "'";
+                String query = "SELECT * FROM users WHERE id = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setString(1, userId);
                 }
-            }
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
 
-            if (conn != null) {
-                conn.close();
+                ResultSet rs = stmt.executeQuery(query);
             }
         }
-
     }
 }
