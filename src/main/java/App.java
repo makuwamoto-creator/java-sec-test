@@ -9,8 +9,6 @@ public class App {
 
         try {
             // ❌ 脆弱なポイント：ユーザー入力をそのままシェルコマンドに渡している
-            //String command = "ping -c 3 " + targetDomain;
-            //Process process = Runtime.getRuntime().exec(command);
             ProcessBuilder pb = new ProcessBuilder("ping", "-c", "3", targetDomain);
             Process process = pb.start();
 
