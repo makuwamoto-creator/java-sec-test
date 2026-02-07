@@ -28,12 +28,11 @@ jobs:
           cache: 'maven' # ビルドを高速化するキャッシュ機能(.m2フォルダ)
 
       # (B) Mavenでビルドを実行（コンパイルエラーがないかチェック）
-      - name: Build with Maven
-        #run: mvn clean compile
-        run: mvn clean package
+      - name: Build with Maven spotbugs check
+        run: mvn clean compile spotbugs:check
 
       # (C) Semgrepスキャンを実行
-      - name: Run Semgrep scan
+      #- name: Run Semgrep scan
         # --error 引数により、脆弱性発見時にジョブを失敗させる
         # run: semgrep scan --config="p/java" --error
         
@@ -41,7 +40,11 @@ jobs:
         # Dockerの 「ボリュームマウント（Volume Mount）」
         # -v $(pwd):/src -> 今の場所（リポジトリのコード）を、コンテナの/srcにマウント
         # $(pwd) : 現在のディレクトリ（あなたのJavaコードがある場所）
-        run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
+      #  run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
+
+      # (D) Mavenでビルドを実行
+      - name: Build with Maven
+        run: mvn clean package
 
       - name: Upload SARIF file
         # GitHub公式の機能を使って、SARIFファイルをGitHubにアップロードする
