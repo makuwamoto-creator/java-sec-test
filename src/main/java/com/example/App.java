@@ -30,7 +30,7 @@ public class App {
         // 🚨 2. 暗号化の問題 (S2257 / CWE-327)
         // インスタンスを作るだけで検知される強力なルール
         try {
-            javax.crypto.Cipher.getInstance("DES");
+            javax.crypto.Cipher.getInstance("AES/GCM/NoPadding");
         } catch (Exception e) {
             // e.printStackTrace(); // これは Code Smell なので書かない（笑）
         }
