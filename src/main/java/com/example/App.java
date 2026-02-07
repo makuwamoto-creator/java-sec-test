@@ -58,7 +58,8 @@ public class App {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                logger.log(Level.SEVERE, line);
+                String cleanLine = line.replace('\n', '_').replace('\r', '_');
+                logger.log(Level.SEVERE, cleanLine);
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "コマンドの実行に失敗しました。管理者に連絡してください。");
