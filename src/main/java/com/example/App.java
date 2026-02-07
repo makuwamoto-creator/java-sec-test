@@ -36,7 +36,8 @@ public class App {
 
         // 🚨 3. ログ・インジェクション (CWE-117)
         if (args.length > 0) {
-            logger.info("User input: " + args[0].replaceAll("[\r\n]", ""));
+            String logtext = "User input: " + args[0]; 
+            logger.info(logtext.replaceAll("[\r\n]", ""));
         }
         
         // 本来は引数などで受け取るユーザー入力（例: "google.com"）
