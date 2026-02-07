@@ -29,16 +29,17 @@ jobs:
 
       # (B) Mavenでビルドを実行（コンパイルエラーがないかチェック）
       - name: Build with Maven spotbugs check
-        run: mvn clean compile spotbugs:spotbugs -Dspotbugs.failOnError=false
+        run: mvn clean compile spotbugs:spotbugs
 
       - name: Convert SpotBugs XML to SARIF
-        run: |
-          # コンバーターのダウンロード
-          wget https://github.com/spdx/sarif-sdk/releases/download/v2.1.0/sarif-converter.jar -O sarif-converter.jar
-          # XML を SARIF に変換
-          # ※ target/spotbugsXml.xml は mvn spotbugs:spotbugs で生成されるデフォルトのパスです
-          java -jar sarif-converter.jar spotbugs target/spotbugsXml.xml spotbugs.sarif
-
+        # Microsoft提供の変換ツールを使用
+        uses: pdr-one/sarif-converter@v1
+        with:
+          # spotbugsXml.xml を指定
+          input: 'target/spotbugsXml.xml'
+          output: 'spotbugs.sarif'
+          format: 'spotbugs'
+          
       # (C) Semgrepスキャンを実行
       #- name: Run Semgrep scan
         # --error 引数により、脆弱性発見時にジョブを失敗させる
