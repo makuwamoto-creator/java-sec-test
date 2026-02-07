@@ -17,7 +17,7 @@ public class App {
             //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", targetDomain);
             //Process process = pb.start();
             String command = "ping -c 3 " + targetDomain;
-            Runtime.getRuntime().exec(command);
+            Process process = Runtime.getRuntime().exec(command);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
