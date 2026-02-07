@@ -20,7 +20,7 @@ public class App {
         String input = scanner.nextLine(); 
 
         // 🚨 汚染されたデータをそのままログに流す
-        logger.info("User logged in: " + input); 
+        logger.info("User logged in: " + input.replaceAll("[\r\n]", "")); 
         
         scanner.close();
 
@@ -37,7 +37,7 @@ public class App {
 
         // 🚨 3. ログ・インジェクション (CWE-117)
         if (args.length > 0) {
-            logger.info("User input: " + args[0]);
+            logger.info("User input: " + args[0].replaceAll("[\r\n]", ""));
         }
         
         // 本来は引数などで受け取るユーザー入力（例: "google.com"）
@@ -53,7 +53,9 @@ public class App {
             if (args.length == 0) return;
             String safeCommand = args[0].replaceAll("[\r\n]", "");
 
-            Process process = Runtime.getRuntime().exec(safeCommand);
+            //Process process = Runtime.getRuntime().exec(safeCommand);
+            ProcessBuilder pb = new ProcessBuilder(safeCommand);
+            Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
