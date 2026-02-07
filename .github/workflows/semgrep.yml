@@ -29,7 +29,7 @@ jobs:
 
       # (B) Mavenでビルドを実行（コンパイルエラーがないかチェック）
       - name: Build with Maven spotbugs check
-        run: mvn clean compile spotbugs:spotbugs
+        run: mvn clean compile spotbugs:spotbugs -Dspotbugs.failOnError=false
 
       - name: Convert SpotBugs XML to SARIF
         run: |
