@@ -23,9 +23,23 @@ public class App {
         logger.info("User logged in: " + input); 
         
         scanner.close();
+
         String hardcodedPassword = "password12345";
         logger.info(hardcodedPassword);
 
+        // 🚨 2. 暗号化の問題 (S2257 / CWE-327)
+        // インスタンスを作るだけで検知される強力なルール
+        try {
+            javax.crypto.Cipher.getInstance("DES");
+        } catch (Exception e) {
+            // e.printStackTrace(); // これは Code Smell なので書かない（笑）
+        }
+
+        // 🚨 3. ログ・インジェクション (CWE-117)
+        if (args.length > 0) {
+            logger.info("User input: " + args[0]);
+        }
+        
         // 本来は引数などで受け取るユーザー入力（例: "google.com"）
         // 攻撃者が "google.com; cat /etc/passwd" と入力すると大変なことに！
         // String targetDomain = args.length > 0 ? args[0] : "localhost";
