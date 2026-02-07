@@ -29,7 +29,14 @@ jobs:
 
       # (B) Mavenでビルドを実行（コンパイルエラーがないかチェック）
       - name: Build with Maven spotbugs check
-        run: mvn clean compile spotbugs:check
+        run: mvn clean compile spotbugs:spotbugs
+
+      - name: Install and Run SpotBugs SARIF converter
+        # SpotBugsのXMLをSARIFに変換するアクション
+        uses: spotbugs/spotbugs-github-action@v1.2
+        with:
+          path: 'target/spotbugsXml.xml'
+          output: 'spotbugs.sarif'
 
       # (C) Semgrepスキャンを実行
       #- name: Run Semgrep scan
@@ -51,7 +58,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v4
         # 前のステップで作成したファイルを指定
         with:
-          sarif_file: semgrep.sarif
+          sarif_file: spotbugs.sarif #semgrep.sarif
         # スキャンが失敗しても（脆弱性が見つかっても）アップロードを実行する設定
         if: always()
 
