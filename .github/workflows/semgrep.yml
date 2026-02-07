@@ -43,8 +43,8 @@ jobs:
       #  run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/java" --sarif --output=/src/semgrep.sarif
 
       # (D) Mavenでビルドを実行
-      - name: Build with Maven
-        run: mvn clean package
+      #- name: Build with Maven
+      #  run: mvn clean package
 
       # 生成されたファイルを確認するステップ（デバッグ用：ログで名前が見れます）
       - name: List target directory
