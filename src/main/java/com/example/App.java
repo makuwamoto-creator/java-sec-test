@@ -17,9 +17,9 @@ public class App {
         System.out.print("Enter your name: ");
         
         // 🚨 SonarQube が「汚染源（Taint Source）」として認識しやすい入力方法
-        String input = scanner.nextLine(); 
+        String input = "User logged in:" + scanner.nextLine(); 
         // 🚨 汚染されたデータをそのままログに流す
-        logger.info("User logged in:" + input.replaceAll("[\r\n]", "_")); 
+        logger.info(input.replaceAll("[\r\n]", "_")); 
         
         scanner.close();
 
