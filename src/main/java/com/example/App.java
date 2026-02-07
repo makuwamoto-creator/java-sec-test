@@ -9,8 +9,8 @@ import java.util.logging.Level;
 public class App {
     private static final Logger logger = Logger.getLogger(App.class.getName());
 
-    String hardcodedPassword = "password12345";
-    
+
+
     public static void main(String[] args) {
         
         Scanner scanner = new Scanner(System.in);
@@ -23,6 +23,8 @@ public class App {
         logger.info("User logged in: " + input); 
         
         scanner.close();
+        String hardcodedPassword = "password12345";
+        logger.info(hardcodedPassword);
 
         // 本来は引数などで受け取るユーザー入力（例: "google.com"）
         // 攻撃者が "google.com; cat /etc/passwd" と入力すると大変なことに！
