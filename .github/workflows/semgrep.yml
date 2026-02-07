@@ -50,6 +50,10 @@ jobs:
       - name: List target directory
         run: ls -l target/
 
+      - name: Rename SARIF file
+        # 生成された .json を GitHub が認識できる .sarif にリネームします
+        run: mv target/spotbugsSarif.json target/spotbugs.sarif
+
       - name: Upload SARIF file
         # GitHub公式の機能を使って、SARIFファイルをGitHubにアップロードする
         uses: github/codeql-action/upload-sarif@v4
