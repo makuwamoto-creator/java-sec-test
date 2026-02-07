@@ -54,7 +54,7 @@ public class App {
             String safeCommand = args[0].replaceAll("[\r\n]", "");
 
             //Process process = Runtime.getRuntime().exec(safeCommand);
-            ProcessBuilder pb = new ProcessBuilder(safeCommand);
+            ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
             Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
