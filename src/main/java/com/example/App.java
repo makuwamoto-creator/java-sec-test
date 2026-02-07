@@ -50,7 +50,10 @@ public class App {
             //Process process = pb.start();
             //String command = "ping -c 3 " + targetDomain;
             //Process process = Runtime.getRuntime().exec(command);
-            Process process = Runtime.getRuntime().exec(args[0]);
+            if (args.length == 0) return;
+            String safeCommand = args[0].replaceAll("[\r\n]", "");
+
+            Process process = Runtime.getRuntime().exec(safeCommand);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
