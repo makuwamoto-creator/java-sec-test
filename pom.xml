@@ -27,6 +27,7 @@
                     <effort>Max</effort>
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
+                    <sarifOutput>true</sarifOutput>
                     <plugins>
                         <plugin>
                             <groupId>com.h3xstream.findsecbugs</groupId>
@@ -45,5 +46,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>

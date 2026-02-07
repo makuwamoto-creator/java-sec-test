@@ -31,13 +31,6 @@ jobs:
       - name: Build with Maven spotbugs check
         run: mvn clean compile spotbugs:spotbugs
 
-      - name: Convert SpotBugs XML to SARIF
-        run: |
-          # Mavenのローカルリポジトリから SpotBugs の jar パスを取得
-          # 取得できない場合は、より汎用的な Python ツールで変換します
-          pip install sarif-tools
-          sarif-tools from-spotbugs target/spotbugsXml.xml -o spotbugs.sarif
-
       # (C) Semgrepスキャンを実行
       #- name: Run Semgrep scan
         # --error 引数により、脆弱性発見時にジョブを失敗させる
