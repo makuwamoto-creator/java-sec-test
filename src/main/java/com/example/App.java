@@ -59,8 +59,8 @@ public class App {
             //String command = "ping -c 3 " + targetDomain;
             //Process process = Runtime.getRuntime().exec(command);
             if (args.length == 0) return;
-            String safeCommand = args[0].replaceAll("[\r\n]", "");
-            safeCommand.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1");
+            String safeCommand = args[0].replaceAll("[\r\n]", "").replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1");
+        
             //Process process = Runtime.getRuntime().exec(commandList);
             ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
             Process process = pb.start();
