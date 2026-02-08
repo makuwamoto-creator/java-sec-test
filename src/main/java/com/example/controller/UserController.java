@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.Pattern;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
