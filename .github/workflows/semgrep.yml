@@ -49,15 +49,12 @@ jobs:
       #- name: Rename SARIF file
       #  # 生成された .json を GitHub が認識できる .sarif にリネームします
       #  run: mv target/spotbugsSarif.json target/spotbugs.sarif
-
-      # 🌟 XMLをSARIFに変換する（確実に存在するアクション）
-      - name: Convert SpotBugs XML to SARIF
-        uses: p0deje/spotbugs-action@v1
-        with:
-          # Mavenが生成したXMLを指定
-          path: target/spotbugsXml.xml
-          # SARIFとして出力するファイル名
-          output: target/spotbugs.sarif
+      - name: Rename and Fix SARIF
+        # 1. リネームする
+        # 2. sedコマンドで、不正な "[null]" を空の配列 "[]" に置換して修復する
+        run: |
+          mv target/spotbugsSarif.json target/spotbugs.sarif
+          sed -i 's/\[null\]/\[\]/g' target/spotbugs.sarif
 
       # 生成されたファイルを確認するステップ（デバッグ用：ログで名前が見れます）
       - name: List target directory
