@@ -37,13 +37,12 @@ public class UserController {
     // 🚨 脆弱性 3: Path Traversal
     // 外部からの入力を使ってサーバー上のファイルを直接読み込んでいる
     @GetMapping("/view-file")
-    public String viewFile(@RequestParam 
+    public String viewFile(
+        @RequestParam 
         @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "不正なファイル形式です") String fileName
     ) throws Exception {
-        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
-            throw new IllegalArgumentException("Invalid file name");
-        }
-        String saniFileNeme = (new File(fileName)).getName();
+        String sanitized = fileName.substring(0, fileName.length());
+        String saniFileNeme = (new File(sanitized)).getName();
         File file = new File("src/main/resources/static/" + saniFileNeme);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     }
