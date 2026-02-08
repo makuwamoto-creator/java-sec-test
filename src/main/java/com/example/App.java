@@ -60,16 +60,9 @@ public class App {
             //Process process = Runtime.getRuntime().exec(command);
             if (args.length == 0) return;
             String safeCommand = args[0].replaceAll("[\r\n]", "");
-
-            List<String> commandList = new ArrayList<>();
-            commandList.add("/usr/bin/ping");
-            commandList.add("-c");
-            commandList.add("3");
-            commandList.add(safeCommand); // 外部入力
-
+            safeCommand.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1");
             //Process process = Runtime.getRuntime().exec(commandList);
-            //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
-            ProcessBuilder pb = new ProcessBuilder(commandList);
+            ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
             Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF_8"));
