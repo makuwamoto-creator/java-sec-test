@@ -1,8 +1,13 @@
 package com.example; // これを追加（名前は何でも良いですが、一般的になぞります）
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger; // 1. Loggerをインポート
+
+import javax.crypto.NoSuchPaddingException;
+
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -30,7 +35,8 @@ public class App {
         // インスタンスを作るだけで検知される強力なルール
         try {
             javax.crypto.Cipher.getInstance("AES/GCM/NoPadding");
-        } catch (Exception e) {
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
+            logger.info("exception");
             // e.printStackTrace(); // これは Code Smell なので書かない（笑）
         }
 
@@ -63,7 +69,7 @@ public class App {
                 String cleanLine = line.replace('\n', '_').replace('\r', '_');
                 logger.log(Level.SEVERE, cleanLine);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.log(Level.SEVERE, "コマンドの実行に失敗しました。管理者に連絡してください。");
         }
     }
