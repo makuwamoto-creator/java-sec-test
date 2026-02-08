@@ -18,8 +18,9 @@ public class UserController {
     // ユーザー入力をそのまま SQL クエリに結合している
     @GetMapping("/users/search")
     public List searchUsers(@RequestParam String name) {
-        String sql = "SELECT * FROM users WHERE name = '" + name + "'";
-        return jdbcTemplate.queryForList(sql);
+        String sql = "SELECT * FROM users WHERE name = ? ";
+        
+        return jdbcTemplate.queryForList(sql, name);
     }
 
     // 🚨 脆弱性 2: Reflected Cross-Site Scripting (XSS)
