@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Pattern;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Set;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -17,6 +19,13 @@ public class UserController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    // 1. 許可するファイル名のリスト（ホワイトリスト）を定義
+    private static final Set<String> ALLOWED_FILES = Set.of(
+        "readme.txt",
+        "manual.pdf",
+        "logo.png"
+    );
 
     // 🚨 脆弱性 1: SQL Injection
     // ユーザー入力をそのまま SQL クエリに結合している
@@ -41,9 +50,19 @@ public class UserController {
         @RequestParam 
         @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "不正なファイル形式です") String fileName
     ) throws Exception {
-        String sanitized = fileName.substring(0, fileName.length());
-        String saniFileNeme = (new File(sanitized)).getName();
-        File file = new File("src/main/resources/static/" + saniFileNeme);
+        //String saniFileNeme = (new File(fileName)).getName();
+
+        // 1. リストの中から一致するものを探す（ここで外部入力との直接の繋がりを断つ）
+        Optional<String> safeFileName = ALLOWED_FILES.stream()
+            .filter(f -> f.equals(fileName))
+            .findFirst();
+
+        // 2. リストに含まれているかチェック
+        if (safeFileName.isEmpty()) {
+            throw new IllegalArgumentException("アクセスが許可されていないファイルです。");
+        }
+
+        File file = new File("src/main/resources/static/" + safeFileName);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     }
 }
