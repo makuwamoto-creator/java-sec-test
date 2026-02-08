@@ -50,12 +50,14 @@ jobs:
       #  # 生成された .json を GitHub が認識できる .sarif にリネームします
       #  run: mv target/spotbugsSarif.json target/spotbugs.sarif
 
+      # 🌟 XMLをSARIFに変換する（確実に存在するアクション）
       - name: Convert SpotBugs XML to SARIF
-        uses: jpetrucciani/spotbugs-sarif-action@main
+        uses: p0deje/spotbugs-action@v1
         with:
-          # spotbugsXml.xml を読み込んで、正しい sarif を出力する
-          spotbugsxml: target/spotbugsXml.xml
-          out: target/spotbugs.sarif
+          # Mavenが生成したXMLを指定
+          path: target/spotbugsXml.xml
+          # SARIFとして出力するファイル名
+          output: target/spotbugs.sarif
 
       # 生成されたファイルを確認するステップ（デバッグ用：ログで名前が見れます）
       - name: List target directory
