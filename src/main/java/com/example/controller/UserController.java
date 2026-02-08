@@ -39,6 +39,6 @@ public class UserController {
         }
         String saniFileNeme = (new File(fileName)).getName();
         File file = new File("src/main/resources/static/" + saniFileNeme);
-        return new String(Files.readAllBytes(file.toPath()));
+        return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     }
 }
