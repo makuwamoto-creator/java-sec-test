@@ -62,7 +62,9 @@ public class UserController {
             throw new IllegalArgumentException("アクセスが許可されていないファイルです。");
         }
 
-        File file = new File("src/main/resources/static/" + safeFileName.get());
+        String finalSafeName = new String(safeFileName.get().toCharArray());
+
+        File file = new File("src/main/resources/static/" + finalSafeName);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     }
 }
