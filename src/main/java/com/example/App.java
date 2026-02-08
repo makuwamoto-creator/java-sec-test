@@ -8,6 +8,8 @@ import java.util.logging.Logger; // 1. Loggerをインポート
 
 import javax.crypto.NoSuchPaddingException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -59,9 +61,15 @@ public class App {
             if (args.length == 0) return;
             String safeCommand = args[0].replaceAll("[\r\n]", "");
 
-            //Process process = Runtime.getRuntime().exec(safeCommand);
-            @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("COMMAND_INJECTION")
-            ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
+            List<String> commandList = new ArrayList<>();
+            commandList.add("/usr/bin/ping");
+            commandList.add("-c");
+            commandList.add("3");
+            commandList.add(safeCommand); // 外部入力
+
+            //Process process = Runtime.getRuntime().exec(commandList);
+            //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
+            ProcessBuilder pb = new ProcessBuilder(commandList);
             Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF_8"));
