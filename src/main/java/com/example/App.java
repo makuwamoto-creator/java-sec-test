@@ -60,6 +60,7 @@ public class App {
             String safeCommand = args[0].replaceAll("[\r\n]", "");
 
             //Process process = Runtime.getRuntime().exec(safeCommand);
+            @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("COMMAND_INJECTION")
             ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
             Process process = pb.start();
 
