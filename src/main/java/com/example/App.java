@@ -58,9 +58,9 @@ public class App {
             //Process process = Runtime.getRuntime().exec(command);
             if (args.length == 0) return;
             String safeCommand = args[0].replaceAll("[\r\n]", "");
-            String sanicommand = testfunc(safeCommand);
+
             //Process process = Runtime.getRuntime().exec(command.replaceAll("[\r\n]", "").replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
-            ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", sanicommand);
+            ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
             Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF_8"));
@@ -72,11 +72,5 @@ public class App {
         } catch (IOException e) {
             logger.log(Level.SEVERE, "コマンドの実行に失敗しました。管理者に連絡してください。");
         }
-    }
-    public static String testfunc(String instring){
-        //String returnstr = instring; 
-        //returnstr = "localhost";
-        return instring.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1");
-        //return returnstr;
     }
 }
