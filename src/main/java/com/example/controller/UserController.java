@@ -61,7 +61,7 @@ public class UserController {
         if (safeFileName.isEmpty()) {
             throw new IllegalArgumentException("アクセスが許可されていないファイルです。");
         }
-        String saniPath = "src/main/resources/static/" + safeFileName;
+        String saniPath = "src/main/resources/static/" + safeFileName.get();
 
         File file = new File(saniPath);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
