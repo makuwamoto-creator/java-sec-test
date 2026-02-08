@@ -53,6 +53,9 @@ jobs:
       # 生成されたファイルを確認するステップ（デバッグ用：ログで名前が見れます）
       - name: List target directory
         run: ls -l target/
+        
+      - name: Display SARIF
+        run: cat target/spotbugs.sarif
 
       - name: Upload SARIF file
         # GitHub公式の機能を使って、SARIFファイルをGitHubにアップロードする
