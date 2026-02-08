@@ -74,9 +74,9 @@ public class App {
         }
     }
     public static String testfunc(String instring){
-        String returnstr = instring; 
-        returnstr = "localhost";
-        //return instring.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1");
-        return returnstr;
+        //String returnstr = instring; 
+        //returnstr = "localhost";
+        return instring.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1");
+        //return returnstr;
     }
 }
