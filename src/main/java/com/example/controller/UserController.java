@@ -3,12 +3,15 @@ package com.example.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.validation.annotation.Validated;
+
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 
 @RestController
+@Validated
 public class UserController {
 
     @Autowired
@@ -33,7 +36,9 @@ public class UserController {
     // 🚨 脆弱性 3: Path Traversal
     // 外部からの入力を使ってサーバー上のファイルを直接読み込んでいる
     @GetMapping("/view-file")
-    public String viewFile(@RequestParam String fileName) throws Exception {
+    public String viewFile(@RequestParam 
+        @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "不正なファイル形式です") String fileName
+    ) throws Exception {
         if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
             throw new IllegalArgumentException("Invalid file name");
         }
