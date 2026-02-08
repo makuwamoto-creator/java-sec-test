@@ -13,7 +13,7 @@ public class App {
 
     public static void main(String[] args) {
         
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, "UTF_8");
         System.out.print("Enter your name: ");
         
         // 🚨 SonarQube が「汚染源（Taint Source）」として認識しやすい入力方法
@@ -57,7 +57,7 @@ public class App {
             ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand);
             Process process = pb.start();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF_8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 String cleanLine = line.replace('\n', '_').replace('\r', '_');
