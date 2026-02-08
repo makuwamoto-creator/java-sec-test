@@ -34,6 +34,9 @@ public class UserController {
     // 外部からの入力を使ってサーバー上のファイルを直接読み込んでいる
     @GetMapping("/view-file")
     public String viewFile(@RequestParam String fileName) throws Exception {
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            throw new IllegalArgumentException("Invalid file name");
+        }
         String saniFileNeme = (new File(fileName)).getName();
         File file = new File("src/main/resources/static/" + saniFileNeme);
         return new String(Files.readAllBytes(file.toPath()));
