@@ -56,11 +56,12 @@ public class App {
             // ❌ 脆弱なポイント：ユーザー入力をそのままシェルコマンドに渡している
             //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", targetDomain);
             //Process process = pb.start();
-            String command = "ping -c 3 " + targetDomain;
+
             //Process process = Runtime.getRuntime().exec(command);
-            //if (args.length == 0) return;
+            if (args.length == 0) return;
             //String safeCommand = args[0].replaceAll("[\r\n]", "");
-        
+            String command = "ping -c 3 " + args[0];
+
             Process process = Runtime.getRuntime().exec(command.replaceAll("[\r\n]", "").replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
             //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
             //Process process = pb.start();
