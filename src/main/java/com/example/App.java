@@ -56,14 +56,14 @@ public class App {
             // ❌ 脆弱なポイント：ユーザー入力をそのままシェルコマンドに渡している
             //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", targetDomain);
             //Process process = pb.start();
-            //String command = "ping -c 3 " + targetDomain;
+            String command = "ping -c 3 " + targetDomain;
             //Process process = Runtime.getRuntime().exec(command);
-            if (args.length == 0) return;
-            String safeCommand = args[0].replaceAll("[\r\n]", "");
+            //if (args.length == 0) return;
+            //String safeCommand = args[0].replaceAll("[\r\n]", "");
         
-            //Process process = Runtime.getRuntime().exec(commandList);
-            ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
-            Process process = pb.start();
+            Process process = Runtime.getRuntime().exec(command.replaceAll("[\r\n]", "").replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
+            //ProcessBuilder pb = new ProcessBuilder("/usr/bin/ping", "-c", "3", safeCommand.replaceAll("([&|;><`!\\\\'\"\\{\\}\\[\\]\\(\\)\\^~])", "\\\\$1"));
+            //Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF_8"));
             String line;
