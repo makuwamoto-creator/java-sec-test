@@ -264,6 +264,7 @@ public class UserController {
         return "Logged";
     }
 
+    /*
     @GetMapping("/preview")
     public String getWebPreview(@RequestParam String url) throws java.io.IOException {
         // ❌ 危険：ユーザーから渡された URL にサーバーが直接アクセスしている
@@ -279,5 +280,27 @@ public class UserController {
         
         // 応答を読み取って返す（フリ）
         return "Content fetched from " + url + " (Status: " + responseCode + ")";
+    } */
+
+    @GetMapping("/preview")
+    public String getWebPreview(@RequestParam String url) throws Exception {
+        // 1. 文字列から URI オブジェクトを生成
+        java.net.URI uri = java.net.URI.create(url);
+        
+        // 2. ホスト名（ドメイン）を抽出
+        String host = uri.getHost();
+
+        // ✅ 対策：ホワイトリストによるチェック
+        // 例として、自社のドメイン（example.com）と、許可された画像サーバーのみ許可する
+        if (host == null || !(host.equals("example.com") || host.equals("images.trusted.com"))) {
+            throw new IllegalArgumentException("不許可のドメインへのアクセスは禁止されています");
+        }
+
+        // 3. 許可された場合のみ URL に変換して接続
+        java.net.URL requestUrl = uri.toURL();
+        java.net.HttpURLConnection conn = (java.net.HttpURLConnection) requestUrl.openConnection();
+        conn.setRequestMethod("GET");
+        
+        return "Content fetched from " + host + " (Status: " + conn.getResponseCode() + ")";
     }
 }
