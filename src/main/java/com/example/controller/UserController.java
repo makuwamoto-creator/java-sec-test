@@ -5,6 +5,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.annotation.Validated;
@@ -13,11 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Pattern;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
+import java.util.logging.Logger;
 
+import com.example.App;
 import com.example.model.MyData;// 作成したモデルをインポート
 
 @RestController
@@ -33,6 +37,8 @@ public class UserController {
         "manual.pdf",
         "logo.png"
     );
+
+    private static final Logger logger = Logger.getLogger(App.class.getName());
 
     // 🚨 脆弱性 1: SQL Injection
     // ユーザー入力をそのまま SQL クエリに結合している
@@ -228,8 +234,16 @@ public class UserController {
         factory.setExpandEntityReferences(false);
 
         javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
-        builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
+        builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes(StandardCharsets.UTF_8)));
         
         return "XML processed safely";
+    }
+
+    @GetMapping("/log")
+    public String logInput(@RequestParam String data) {
+        // ❌ 危険：ユーザー入力をそのままログに出力
+        // 改行コードを含ませて、偽のログエントリーを捏造される（Log Forgery）
+        logger.info("User input: " + data);
+        return "Logged";
     }
 }
