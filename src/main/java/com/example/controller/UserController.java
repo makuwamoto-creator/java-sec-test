@@ -70,8 +70,19 @@ public class UserController {
     // 入力したIPアドレスにpingを打つ機能（のつもり）
     @GetMapping("/ping")
     public String ping(@RequestParam String ip) throws Exception {
+        
+        // 1. 入力バリデーション（IPアドレスとして妥当な文字以外は即拒否）
+        // 数字とドット以外が含まれていたらエラーにする
+        if (ip == null || !ip.matches("^[0-9.]+$")) {
+            throw new IllegalArgumentException("無効なIPアドレス形式です");
+        }
+
+        // これにより、たとえ ";" が含まれていても、OSはそれを一つの引数（文字列）として扱います
+        String[] command = {"ping", "-c", "1", ip};
         // ユーザーの入力をそのままコマンドとして実行してしまう
-        Process process = Runtime.getRuntime().exec("ping -c 1 " + ip);
+        ProcessBuilder ps = new ProcessBuilder(command);
+        
+        Process process = ps.start();
         
         // 実行結果を読み取って返す
         return new String(process.getInputStream().readAllBytes());
