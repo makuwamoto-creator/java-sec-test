@@ -76,7 +76,7 @@ public class UserController {
 
         String finalSafeNames = new String(safeFileName.get().toCharArray());
 
-        File file = new File("src/main/resources/static/" + finalSafeNames);
+        File file = new File(String.format("src/main/resources/static/%s", finalSafeNames));
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     
     }
