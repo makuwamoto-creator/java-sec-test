@@ -149,7 +149,7 @@ public class UserController {
         MyData obj = mapper.readValue(data, MyData.class);
         return "JSON deserialized: Name=" + obj.getName();
     }
-
+/* 
     @GetMapping("/greet")
     public void greet(@RequestParam String name, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
         // コンテンツタイプを HTML に固定する
@@ -158,6 +158,15 @@ public class UserController {
         // ❌ 危険：ユーザーの入力をそのまま HTML として返している
         // もし name に <script>alert('XSS')</script> と入れられたら...？
         response.getWriter().write("<html><body><h1>Hello, " + name + "!</h1></body></html>");
+    }
+ */
+    @GetMapping("/greet")
+    @ResponseBody // 明示的にレスポンス本体であることを示す
+    public String greet(@RequestParam String name) {
+        // String.format を使って、外部入力を HTML 構造に埋め込む
+        // 多くのツールはこの「埋め込み」を XSS の種として認識します
+        String template = "<html><body><div>Welcome, %s</div></body></html>";
+        return String.format(template, name);
     }
 
 }
