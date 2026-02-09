@@ -78,6 +78,7 @@ public class UserController {
 
         File file = new File("src/main/resources/static/" + finalSafeNames);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+    
     }
 
     // ❌ 危険：OS Command Injection の脆弱性があるコード
