@@ -295,6 +295,9 @@ public class UserController {
         if (host == null || !(host.equals("example.com") || host.equals("images.trusted.com"))) {
             throw new IllegalArgumentException("不許可のドメインへのアクセスは禁止されています");
         }
+        if( uri.getScheme().equals("https")){
+            throw new IllegalArgumentException("不許可のドメインへのアクセスは禁止されています");
+        }
 
         // 3. 許可された場合のみ URL に変換して接続
         java.net.URL requestUrl = uri.toURL();
