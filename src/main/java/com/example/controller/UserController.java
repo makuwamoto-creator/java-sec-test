@@ -50,8 +50,6 @@ public class UserController {
         @RequestParam 
         @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "不正なファイル形式です") String fileName
     ) throws Exception {
-        //String saniFileNeme = (new File(fileName)).getName();
-
         // 1. リストの中から一致するものを探す（ここで外部入力との直接の繋がりを断つ）
         Optional<String> safeFileName = ALLOWED_FILES.stream()
             .filter(f -> f.equals(fileName))
@@ -66,5 +64,16 @@ public class UserController {
 
         File file = new File("src/main/resources/static/" + finalSafeName);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    // ❌ 危険：OS Command Injection の脆弱性があるコード
+    // 入力したIPアドレスにpingを打つ機能（のつもり）
+    @GetMapping("/ping")
+    public String ping(@RequestParam String ip) throws Exception {
+        // ユーザーの入力をそのままコマンドとして実行してしまう
+        Process process = Runtime.getRuntime().exec("ping -c 1 " + ip);
+        
+        // 実行結果を読み取って返す
+        return new String(process.getInputStream().readAllBytes());
     }
 }
