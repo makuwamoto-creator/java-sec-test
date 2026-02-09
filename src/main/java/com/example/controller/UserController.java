@@ -73,7 +73,7 @@ public class UserController {
         
         // 1. 入力バリデーション（IPアドレスとして妥当な文字以外は即拒否）
         // 数字とドット以外が含まれていたらエラーにする
-/*         if (ip == null || !ip.matches("^[0-9.]+$")) {
+        if (ip == null || !ip.matches("^[0-9.]+$")) {
             throw new IllegalArgumentException("無効なIPアドレス形式です");
         }
 
@@ -82,14 +82,16 @@ public class UserController {
         // ユーザーの入力をそのままコマンドとして実行してしまう
         ProcessBuilder ps = new ProcessBuilder(command);
         
-        Process process = ps.start(); */
+        Process process = ps.start();
 
         // 実行結果を読み取って返す
-        //return new String(process.getInputStream().readAllBytes());
+        return new String(process.getInputStream().readAllBytes());
 
+        /*
         // Java標準機能でPingに相当する処理をする例
         boolean reachable = java.net.InetAddress.getByName(ip).isReachable(3000);
-        return "Reachable: " + reachable;
+        return "Reachable: " + reachable; 
+        */
 
     }
 }
