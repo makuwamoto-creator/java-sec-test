@@ -200,4 +200,15 @@ public class UserController {
 
         return "Displaying profile for user: " + userId + " (Confidential Data...)";
     }    
+
+    @PostMapping("/xml")
+    public String parseXml(@RequestBody String xmlData) throws Exception {
+        // ❌ 危険：デフォルト設定の DocumentBuilderFactory は XXE に脆弱
+        javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
+        
+        // XMLをパースする（ここで外部ファイルを読み込まされる可能性がある）
+        builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
+        return "XML processed";
+    }
 }
