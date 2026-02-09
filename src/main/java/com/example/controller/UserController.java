@@ -270,10 +270,14 @@ public class UserController {
         // 攻撃者が "http://localhost:8080/admin" や 
         // "http://169.254.169.254/latest/meta-data/" (クラウド設定) を指定すると
         // 外部からアクセスできない内部情報が盗まれてしまう
-        java.net.URL requestUrl = new java.net.URL(url);
+        java.net.URL requestUrl = java.net.URI.create(url).toURL();
         java.net.HttpURLConnection conn = (java.net.HttpURLConnection) requestUrl.openConnection();
         
+        // 接続して内容を取得しようとする動作
+        conn.setRequestMethod("GET");
+        int responseCode = conn.getResponseCode();
+        
         // 応答を読み取って返す（フリ）
-        return "Content fetched from " + url;
+        return "Content fetched from " + url + " (Status: " + responseCode + ")";
     }
 }
