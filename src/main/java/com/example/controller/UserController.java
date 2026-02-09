@@ -94,4 +94,23 @@ public class UserController {
         */
 
     }
+
+
+    @GetMapping("/deserialize")
+    public String deserialize(@RequestParam String data) throws Exception {
+        // 1. Base64デコード
+        byte[] bytes = java.util.Base64.getDecoder().decode(data);
+
+        // 2. 危険なデシリアライゼーション
+        // ObjectInputStream は、中身が何かを確認せずに復元（インスタンス化）しようとします
+        java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(bytes));
+        
+        // ここで攻撃者が用意した特殊なオブジェクトが読み込まれると、
+        // readObject() が呼ばれた瞬間に任意のコードが実行されます
+        Object obj = ois.readObject();
+        ois.close();
+
+        return "Object deserialized: " + obj.toString();
+    }
+    
 }
