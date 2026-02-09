@@ -148,4 +148,12 @@ public class UserController {
         MyData obj = mapper.readValue(data, MyData.class);
         return "JSON deserialized: Name=" + obj.getName();
     }
+
+    @GetMapping("/greet")
+    public String greet(@RequestParam String name) {
+        // ❌ 危険：ユーザーの入力をそのまま HTML として返している
+        // もし name に <script>alert('XSS')</script> と入れられたら...？
+        return "<html><body><h1>Hello, " + name + "!</h1></body></html>";
+    }
+    
 }
