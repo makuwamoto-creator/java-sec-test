@@ -176,4 +176,13 @@ public class UserController {
         return "<html><body><h1>Hello, " + escapedName + "!</h1></body></html>";
     }
 
+    // ❌ 危険：IDOR の脆弱性
+    // 他人の ID を指定するだけで、誰のプロフィールでも見られてしまう
+    @GetMapping("/user/profile")
+    public String getUserProfile(@RequestParam String userId) {
+        // 本来は「ログインしている自分の ID」しか見られないはずだが、
+        // 外部から userId を自由に指定できてしまうため、全ユーザーの情報が丸見えになる
+        return "Displaying profile for user: " + userId + " (Confidential Data...)";
+    }
+    
 }
