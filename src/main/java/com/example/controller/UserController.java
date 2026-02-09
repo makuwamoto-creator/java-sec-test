@@ -74,9 +74,9 @@ public class UserController {
             throw new IllegalArgumentException("アクセスが許可されていないファイルです。");
         }
 
-        String finalSafeName = new String(safeFileName.get().toCharArray());
+        String finalSafeNames = new String(safeFileName.get().toCharArray());
 
-        File file = new File("src/main/resources/static/" + finalSafeName);
+        File file = new File("src/main/resources/static/" + finalSafeNames);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     }
 
@@ -94,8 +94,7 @@ public class UserController {
         // これにより、たとえ ";" が含まれていても、OSはそれを一つの引数（文字列）として扱います
         String[] command = {"ping", "-c", "1", ip};
         // ユーザーの入力をそのままコマンドとして実行してしまう
-        ProcessBuilder ps = new ProcessBuilder("/usr/bin/ping", "-c", "3", ip);
-        //ProcessBuilder ps = new ProcessBuilder(command);
+        ProcessBuilder ps = new ProcessBuilder(command);
         
         Process process = ps.start();
 
