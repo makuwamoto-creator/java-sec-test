@@ -16,7 +16,6 @@ import jakarta.validation.constraints.Pattern;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
@@ -77,7 +76,7 @@ public class UserController {
 
         String finalSafeNames = new String(safeFileName.get().toCharArray());
 
-        File file = new File(MessageFormat.format("src/main/resources/static/{0}", finalSafeNames));
+        File file = new File("src/main/resources/static/" + finalSafeNames);
         return new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
     
     }
