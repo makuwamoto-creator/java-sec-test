@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +15,8 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
+
+import com.example.model.MyData;// 作成したモデルをインポート
 
 @RestController
 @Validated
@@ -114,7 +119,7 @@ public class UserController {
     }
  */
 
-    @GetMapping("/deserialize")
+/*     @GetMapping("/deserialize")
     public String deserialize(@RequestParam String data) throws Exception {
         byte[] bytes = java.util.Base64.getDecoder().decode(data);
 
@@ -130,5 +135,17 @@ public class UserController {
             Object obj = ois.readObject();
             return "Object deserialized: " + obj.toString();
         }
+
+        // イメージ：ObjectInputStream をやめて Jackson を使う
+        ObjectMapper mapper = new ObjectMapper();
+        MyData data = mapper.readValue(jsonData, MyData.class); // これなら指摘は出ません
+    }
+*/   
+    @GetMapping("/deserialize")
+    public String deserialize(@RequestParam String data) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        // MyData.class を指定してパース
+        MyData obj = mapper.readValue(data, MyData.class);
+        return "JSON deserialized: Name=" + obj.getName();
     }
 }
