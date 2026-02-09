@@ -238,12 +238,27 @@ public class UserController {
         
         return "XML processed safely";
     }
-
+ 
+    /*
+    //Potential CRLF Injection for logs
     @GetMapping("/log")
     public String logInput(@RequestParam String data) {
         // ❌ 危険：ユーザー入力をそのままログに出力
         // 改行コードを含ませて、偽のログエントリーを捏造される（Log Forgery）
         logger.info("User input: " + data);
+        return "Logged";
+    }
+    */
+   
+    //Potential CRLF Injection for logs対応
+    @GetMapping("/log")
+    public String logInput(@RequestParam String data) {
+        // ✅ 対策：改行コードを置換（サニタイズ）
+        // \r や \n を空文字やアンダースコアに置き換えることで、
+        // ログの一行を強制的に終わらせる攻撃を防ぎます
+        String safeData = data.replaceAll("[\r\n]", "_");
+
+        logger.info("User input: " + safeData);
         return "Logged";
     }
 }
