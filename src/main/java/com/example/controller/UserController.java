@@ -95,7 +95,7 @@ public class UserController {
 
     }
 
-
+/* 
     @GetMapping("/deserialize")
     public String deserialize(@RequestParam String data) throws Exception {
         // 1. Base64デコード
@@ -112,5 +112,23 @@ public class UserController {
 
         return "Object deserialized: " + obj.toString();
     }
-    
+ */
+
+    @GetMapping("/deserialize")
+    public String deserialize(@RequestParam String data) throws Exception {
+        byte[] bytes = java.util.Base64.getDecoder().decode(data);
+
+        // 🌟 修正ポイント：ObjectInputStream を作成
+        try (java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes);
+             java.io.ObjectInputStream ois = new java.io.ObjectInputStream(bais)) {
+
+            // ✅ 対策：ホワイトリストを設定（Stringクラスと特定のパッケージのみ許可）
+            // これにより、攻撃用の怪しいクラスが混じっていても、復元前にブロックされます
+            java.io.ObjectInputFilter filter = java.io.ObjectInputFilter.Config.createFilter("java.lang.String;com.example.models.*;!*");
+            ois.setObjectInputFilter(filter);
+
+            Object obj = ois.readObject();
+            return "Object deserialized: " + obj.toString();
+        }
+    }
 }
