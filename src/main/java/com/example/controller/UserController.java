@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.example.App;
@@ -249,7 +250,7 @@ public class UserController {
         return "Logged";
     }
     */
-   
+
     //Potential CRLF Injection for logs対応
     @GetMapping("/log")
     public String logInput(@RequestParam String data) {
@@ -258,7 +259,7 @@ public class UserController {
         // ログの一行を強制的に終わらせる攻撃を防ぎます
         String safeData = data.replaceAll("[\r\n]", "_");
 
-        logger.info("User input: " + safeData);
+        logger.log(Level.INFO, "User input: {0}", safeData);
         return "Logged";
     }
 }
