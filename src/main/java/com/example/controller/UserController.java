@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -165,8 +166,14 @@ public class UserController {
     public String greet(@RequestParam String name) {
         // String.format を使って、外部入力を HTML 構造に埋め込む
         // 多くのツールはこの「埋め込み」を XSS の種として認識します
-        String template = "<html><body><div>Welcome, %s</div></body></html>";
-        return String.format(template, name);
+        //String template = "<html><body><div>Welcome, %s</div></body></html>";
+        //return String.format(template, name);
+        
+        // ✅ 対策：ユーザー入力を HTML エスケープする
+        // これにより <script> は &lt;script&gt; に変換され、
+        // ブラウザ上では「実行」されず、単なる「文字」として表示されます。
+        String escapedName = HtmlUtils.htmlEscape(name);
+        return "<html><body><h1>Hello, " + escapedName + "!</h1></body></html>";
     }
 
 }
