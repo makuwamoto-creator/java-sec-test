@@ -85,7 +85,7 @@ public class UserController {
         Process process = ps.start();
 
         // 実行結果を読み取って返す
-        return new String(process.getInputStream().readAllBytes());
+        return new String(process.getInputStream().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
 
         /*
         // Java標準機能でPingに相当する処理をする例
