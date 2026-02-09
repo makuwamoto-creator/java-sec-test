@@ -200,7 +200,7 @@ public class UserController {
 
         return "Displaying profile for user: " + userId + " (Confidential Data...)";
     }    
-
+    /* 
     @PostMapping("/xml")
     public String parseXml(@RequestBody String xmlData) throws Exception {
         // ❌ 危険：デフォルト設定の DocumentBuilderFactory は XXE に脆弱
@@ -210,5 +210,26 @@ public class UserController {
         // XMLをパースする（ここで外部ファイルを読み込まされる可能性がある）
         builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
         return "XML processed";
+    }
+    */
+    @PostMapping("/xml")
+    public String parseXml(@RequestBody String xmlData) throws Exception {
+        javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        
+        // ✅ 対策：外部エンティティの読み込みをすべて無効化する
+        // これにより、XMLの中に悪意ある外部参照があっても無視されるようになります
+        String feature = "http://apache.org/xml/features/disallow-doctype-decl";
+        factory.setFeature(feature, true);
+        
+        // その他の推奨設定
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
+
+        javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
+        builder.parse(new java.io.ByteArrayInputStream(xmlData.getBytes()));
+        
+        return "XML processed safely";
     }
 }
