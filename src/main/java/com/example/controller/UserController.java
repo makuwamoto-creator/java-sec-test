@@ -284,6 +284,10 @@ public class UserController {
 
     @GetMapping("/preview")
     public String getWebPreview(@RequestParam String url) throws Exception {
+        if (url.matches("\\Ahttps?://example.com[-_.!~*\'();/?:]")){
+            throw new IllegalArgumentException("不許可のスキームです");
+        }
+
         // 1. 文字列から URI オブジェクトを生成
         java.net.URI uri = java.net.URI.create(url);
         
@@ -296,7 +300,7 @@ public class UserController {
             throw new IllegalArgumentException("不許可のドメインへのアクセスは禁止されています");
         }
         if( uri.getScheme().equals("https")){
-            throw new IllegalArgumentException("不許可のドメインへのアクセスは禁止されています");
+            throw new IllegalArgumentException("不許可のスキームです");
         }
 
         // 3. 許可された場合のみ URL に変換して接続
