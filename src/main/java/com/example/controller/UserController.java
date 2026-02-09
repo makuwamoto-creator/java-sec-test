@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Pattern;
 import java.io.File;
 import java.nio.file.Files;
@@ -150,10 +151,13 @@ public class UserController {
     }
 
     @GetMapping("/greet")
-    public String greet(@RequestParam String name) {
+    public void greet(@RequestParam String name, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+        // コンテンツタイプを HTML に固定する
+        response.setContentType("text/html;charset=UTF-8");
+
         // ❌ 危険：ユーザーの入力をそのまま HTML として返している
         // もし name に <script>alert('XSS')</script> と入れられたら...？
-        return "<html><body><h1>Hello, " + name + "!</h1></body></html>";
+        response.getWriter().write("<html><body><h1>Hello, " + name + "!</h1></body></html>");
     }
-    
+
 }
